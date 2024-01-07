@@ -39,7 +39,7 @@ def generate_synthetic_dataset(length, num_strings, text_length, filename, uniqu
     random_text = create_random_text(existing_strings, text_length, space)
 
     # Save the generated text to a file
-    with open(os.path.join(working_dir, filename), 'w') as file:
+    with open(os.path.join(dataset, filename), 'w') as file:
         file.write(random_text)
 
     return random_text
@@ -51,15 +51,16 @@ text_length = 50000
 uniqueness = True
 spaced = True
 input_file_path = "input.txt"
-working_dir = "data/synthetic_data_char_default/"
+dataset = "synthetic_data_char_default"
 
 exec(open('configurator.py').read()) # overrides from command line or config file
+dataset = os.path.join('data', dataset)
 
-os.makedirs(working_dir, exist_ok=True)
+os.makedirs(dataset, exist_ok=True)
 
 generate_synthetic_dataset(token_length, token_number, text_length, input_file_path, uniqueness, spaced)
 
-with open(os.path.join(working_dir, input_file_path), 'r') as f:
+with open(os.path.join(dataset, input_file_path), 'r') as f:
     data = f.read()
 print(f"length of dataset in characters: {len(data):,}")
 
@@ -91,8 +92,8 @@ print(f"val has {len(val_ids):,} tokens")
 # export to bin files
 train_ids = np.array(train_ids, dtype=np.uint16)
 val_ids = np.array(val_ids, dtype=np.uint16)
-train_ids.tofile(os.path.join(working_dir, 'train.bin'))
-val_ids.tofile(os.path.join(working_dir, 'val.bin'))
+train_ids.tofile(os.path.join(dataset, 'train.bin'))
+val_ids.tofile(os.path.join(dataset, 'val.bin'))
 
 # save the meta information as well, to help us encode/decode later
 meta = {
@@ -100,7 +101,7 @@ meta = {
     'itos': itos,
     'stoi': stoi,
 }
-with open(os.path.join(working_dir, 'meta.pkl'), 'wb') as f:
+with open(os.path.join(dataset, 'meta.pkl'), 'wb') as f:
     pickle.dump(meta, f)
 
 # length of dataset in characters:  1115394
