@@ -10,6 +10,15 @@ import numpy as np
 import random
 import itertools
 
+def contains_no_two_consecutive_chars(new_str, existing_strings):
+    for s in existing_strings:
+        # Generate all substrings of length 3 from each string in existing_strings
+        substrings = [s[i:i+2] for i in range(len(s) - 1)]
+        
+        # Check if any of these substrings appear in new_str
+        if any(sub in new_str for sub in substrings):
+            return False  # Found a forbidden substring in new_str
+    return True  # No forbidden substrings found in new_str
 
 def generate_unique_string(length, char_set, existing_strings, unique):
     if not unique:
@@ -17,7 +26,7 @@ def generate_unique_string(length, char_set, existing_strings, unique):
         return new_str
     while True:
         new_str = ''.join(random.choices(char_set, k=length))
-        if all(new_str not in ''.join(sub) for sub in itertools.combinations(existing_strings, 2)):
+        if contains_no_two_consecutive_chars(new_str, existing_strings):
             return new_str
 
 def create_random_text(strings, text_length, space):
