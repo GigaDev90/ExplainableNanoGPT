@@ -36,7 +36,7 @@ def create_random_text(strings, text_length, space):
       return ''.join(random.choices(list(strings), k=text_length))
 
 def generate_synthetic_dataset(length, num_strings, text_length, filename, unique=True, space=True):
-    char_set = 'abcdefghijklmnopqrstuvwxyz'  # Define your character set
+    char_set = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'  # Define your character set
     existing_strings = set()
 
     # Generate unique strings
