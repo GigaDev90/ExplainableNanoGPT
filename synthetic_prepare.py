@@ -29,13 +29,13 @@ def generate_unique_string(length, char_set, existing_strings, unique):
         if contains_no_two_consecutive_chars(new_str, existing_strings):
             return new_str
 
-def create_random_text(strings, text_length, space):
+def create_random_text(strings, text_length, space, fixedString):
     if space:
-      return ' '.join(random.choices(list(strings), k=text_length))
+      return fixedString.join(random.choices(list(strings), k=text_length))
     else:
       return ''.join(random.choices(list(strings), k=text_length))
 
-def generate_synthetic_dataset(length, num_strings, text_length, filename, unique=True, space=True):
+def generate_synthetic_dataset(length, num_strings, text_length, filename, unique=True, space=True, fixedString=' '):
     char_set = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'  # Define your character set
     existing_strings = set()
 
@@ -45,7 +45,7 @@ def generate_synthetic_dataset(length, num_strings, text_length, filename, uniqu
         existing_strings.add(unique_str)
 
     # Create random text from unique strings
-    random_text = create_random_text(existing_strings, text_length, space)
+    random_text = create_random_text(existing_strings, text_length, space, fixedString)
 
     # Save the generated text to a file
     with open(os.path.join(dataset, filename), 'w') as file:
@@ -59,6 +59,7 @@ token_number = 100
 text_length = 50000
 uniqueness = True
 spaced = True
+fixedString = ' '
 input_file_path = "input.txt"
 dataset = "synthetic_data_char_default"
 
@@ -67,7 +68,7 @@ dataset = os.path.join('data', dataset)
 
 os.makedirs(dataset, exist_ok=True)
 
-generate_synthetic_dataset(token_length, token_number, text_length, input_file_path, uniqueness, spaced)
+generate_synthetic_dataset(token_length, token_number, text_length, input_file_path, uniqueness, spaced, fixedString)
 
 with open(os.path.join(dataset, input_file_path), 'r') as f:
     data = f.read()
